@@ -1,11 +1,6 @@
-# compilating command
 make:
-	python3 generator.py
-	
-# clearing command
-remove:
-	rm -r build dist generator.spec
-
-# making end product
+	python3 gen.py
 install:
-	pyinstaller generator.py --onefile --icon=icons/icon.png -w
+	pyinstaller gen.py applications.py date_lib.py docx_lib.py gui_lib.py logic_n_alert.py tool_lib.py --onefile --windowed
+	rm -r build
+	rm -r gen.spec
