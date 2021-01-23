@@ -4,7 +4,7 @@
 from tkinter import StringVar, Label, Entry, Frame, Button, Radiobutton, IntVar
 from tkinter.ttk import Combobox, Checkbutton
 from date_lib import *
-from docx_lib import docx_urlop, docx_reward, docx_one, docx_hdk, docx_boots
+from docx_lib import docx_urlop, docx_reward, docx_one, docx_hdk, docx_boots, docx_dutyChange_kmp
 from tkinter import filedialog, simpledialog, messagebox
 
 # variables
@@ -61,7 +61,6 @@ def default_application(window, width_size = 40, font_name = "arial", font_size 
     global level
     level_var = StringVar()                                                                                                     # level variable
     level_label = Label(frameDefault, text = "stopień", font = (font_name, font_size))                                          # label "stopień"
-
     level = Combobox(frameDefault, width = width_size + 4, textvariable = level_var)                                            # cobobox object (level)
     level["value"] = ("szeregowy", "starszy szeregowy", "kapral", "starszy kapral", "plutonowy", "sierżant", "starszy sierżant")# combobox values (level)
     level.current(0)
@@ -73,13 +72,13 @@ def default_application(window, width_size = 40, font_name = "arial", font_size 
 
     global name_var
     name_var = StringVar()                                                                                                      # name variable
-    name_label = Label(frameDefault, text = "imię: ", font = (font_name, font_size))                                            # label "imię:"
+    name_label = Label(frameDefault, text = "Imię: ", font = (font_name, font_size))                                            # label "Imię:"
     global name_entry
     name_entry = Entry(frameDefault, width = width_size, textvariable = name_var, font = (font_name, font_size))                # name entry pole
 
     global surname_var
     surname_var = StringVar()                                                                                                   # surname variable
-    surname_label = Label(frameDefault, text = "nazwisko: ", font = (font_name, font_size))                                     # label "nazwisko:"
+    surname_label = Label(frameDefault, text = "Nazwisko: ", font = (font_name, font_size))                                     # label "Nazwisko:"
     global surname_entry
     surname_entry = Entry(frameDefault, width = width_size, textvariable = surname_var, font = (font_name, font_size))          # surname entry pole
 
@@ -336,6 +335,7 @@ def add_application(window, width_size = 40, font_name = "arial", font_size = 12
     add3_entry.grid(column = 2, row = 3, padx = 5, pady = 5)
     frameAdd.pack()
 # code repearing text values
+
 def caseAndDotter(sentence):                                                                                                    # function making first letter uncapital & erasing dot at the end
     if((str(sentence))[-1] == "."):
         print(sentence[0:-1])
@@ -360,6 +360,7 @@ def firstCapital(sentence):                                                     
     return sentence
 
 # applications
+
 def docx_command_urlop():                                                                                                       # function printing "urlop okolicznościowy"
     # errors
     timeTravel(day.get(), month.get(), year.get(), day2.get(), month2.get(), year2.get())
@@ -368,7 +369,7 @@ def docx_command_urlop():                                                       
     timeOrder(day.get(), month.get(), year.get(), day2.get(), month2.get(), year2.get())
 
     level_take = levelCheck(level.get())
-    docx_urlop(level_take + "pchor.", firstCapital(name_entry.get()), surname_entry.get(), firstCapital(where_entry.get()), date_read(), group_entry.get() + ", ",  plat.get() + "pl" + "/" + kmp.get() + "kp", rektor, day.get() + "." + month.get() + "." + year.get() + " r.", day2.get() + "." + month2.get() + "." + year2.get() + " r.", dotter(firstCapital(place_entry.get())), punishment.get(), back_entry.get(), caseAndDotter(mot_entry.get()), add1_entry.get(), add2_entry.get(), add3_entry.get())
+    docx_urlop(level_take + "pchor.", firstCapital(name_entry.get()), surname_entry.get(), firstCapital(where_entry.get()), date_read(), group_entry.get() + ", ",  plat.get() + "pl" + "/" + kmp.get() + "kp", rektor, day.get() + "." + month.get() + "." + year.get() + " r.", day2.get() + "." + month2.get() + "." + year2.get() + " r.", firstCapital(place_entry.get()), punishment.get(), back_entry.get(), caseAndDotter(mot_entry.get()), add1_entry.get(), add2_entry.get(), add3_entry.get())
 
 def docx_command_reward():                                                                                                      # function printing "urlop nagrodowy"
         # errors
@@ -392,17 +393,24 @@ def docx_command_one():                                                         
     level_take = levelCheck(level.get())
     docx_one(level_take + "pchor.", firstCapital(name_entry.get()), surname_entry.get(), firstCapital(where_entry.get()), date_read(), group_entry.get() + ", ",  plat.get() + "pl" + "/" + kmp.get() + "kp", kmp.get(), day.get() + "." + month.get() + "." + year.get() + " r.", day2.get() + "." + month2.get() + "." + year2.get() + " r.", dotter(firstCapital(place_entry.get())), punishment.get(), back_entry.get(), caseAndDotter(mot_entry.get()), firstCapital(add1_entry.get()), firstCapital(add2_entry.get()), firstCapital(add3_entry.get()))
 
-def docx_command_hdk():
+def docx_command_hdk():	                                                                                                        # function printing "HDK"
     level_take = levelCheck(level.get())
     docx_hdk(level_take + "pchor.", name_entry.get(), surname_entry.get(), where_entry.get(), date_read(), group_entry.get(), plat.get() + "pl" + "/" + kmp.get() + "kp", rektor, day.get() + "." + month.get() + "." + year.get() + " r.", day2.get() + "." + month2.get() + "." + year2.get() + " r.", days.get() + "." + months.get() + "." + years.get() + "r.", place_entry.get(), "1.  Potwierdzenie oddania krwi.")
 
-def docx_command_boots():                                                                                                       # function printing buty wojskowe
+def docx_command_boots():                                                                                                       # function printing "buty wojskowe"
         # Error handeling
     checkCalendar(days.get(), months.get(), years.get())
 
     level_take = levelCheck(level.get())
     docx_boots(level_take + "pchor.", firstCapital(name_entry.get()), surname_entry.get(), firstCapital(where_entry.get()), date_read(), group_entry.get() + ", ",  plat.get() + "pl" + "/" + kmp.get() + "kp", kmp.get(), days.get() + "." + months.get() + "." + years.get() + " r.")
 
+def docx_command_dutyChange_kmp():                                                                                              # function printing "zmianę służby na kompanii"
+    checkCalendar(days.get(), months.get(), years.get())
+
+    level_take = levelCheck(level.get())
+    level_take2 = levelCheck(level2.get())
+    docx_dutyChange_kmp(level_take + "pchor. ", firstCapital(name_entry.get()), surname_entry.get(), rang.get(), level_take2 + "pchor. ", firstCapital(name2_entry.get()), surname2_entry.get(), firstCapital(where_entry.get()), date_read(), days.get() + "." + months.get() + "." + years.get() + " r.", group_entry.get(), plat.get(), kmp.get(), caseAndDotter(mot_entry.get()))
+    
 def application_urlop(window, width_size = 40, font_name = "arial", font_size = 12):                                            # application for "urlop okolicznościowy"
 
     # additional settings for application
@@ -499,14 +507,13 @@ def application_hdk(window, width_size = 40, font_name = "arial", font_size = 12
     # display
     default_application(window)                                                                                                 # default application
 
-
     global place_entry
     place = StringVar()                                                                                                         # place variable
     place_label = Label(frameHdk, text = "miejsce docelowe(miasto): ", font = (font_name, font_size))                           # label "gdzie: "
     place_entry = Entry(frameHdk, width = width_size, textvariable = place, font = (font_name, font_size))                      # place entry pole
 
-    place_label.grid(column = 1, row = 1, padx = 5, pady = 10)
-    place_entry.grid(column = 2, row = 1, padx = 5, pady = 10)
+    place_label.grid(column = 1, row = 0, padx = 5, pady = 10)
+    place_entry.grid(column = 2, row = 0, padx = 5, pady = 10)
 
     destination_application(window)                                                                                             # destination application
     date_application(window)                                                                                                    # date application
@@ -515,8 +522,8 @@ def application_hdk(window, width_size = 40, font_name = "arial", font_size = 12
 
     bnt = Button(window, text = "Drukuj!", command = docx_command_hdk)                                                          # button "Drukuj!"
 
-    bnt.pack()
     frameHdk.pack()
+    bnt.pack()
 
 def application_boots(window, width_size = 40, font_name = "arial", font_size = 12):                                            # application for "buty wojskowe"
 
@@ -529,3 +536,67 @@ def application_boots(window, width_size = 40, font_name = "arial", font_size = 
 
     bnt = Button(window, text = "Drukuj!", command = docx_command_boots)                                                        # button "Drukuj!"
     bnt.pack()
+
+def application_dutyChange_kmp(window, width_size = 40, font_name = "arial", font_size = 12):                                   # application for "zmianę służby na kompanii"
+
+    # additional settings for application
+    frameDutyChange = Frame(window)
+
+    global mot_entry
+    mot = StringVar()                                                                                                           # mot variable
+    mot_label = Label(frameDutyChange, text = "Wniosek swój motywuje: ", font = (font_name, font_size))                         # label "motywacja: "
+    mot_entry = Entry(frameDutyChange, width = width_size, textvariable = mot, font = (font_name, font_size))                   # mot entry pole
+
+    # next person data
+    global level2
+    level2_var = StringVar()                                                                                                     # level2 variable
+    level2_label = Label(frameDutyChange, text = "stopień", font = (font_name, font_size))                                       # label2 "stopień"
+    level2 = Combobox(frameDutyChange, width = width_size + 4, textvariable = level2_var)                                        # cobobox object (level2)
+    level2["value"] = ("szeregowy", "starszy szeregowy", "kapral", "starszy kapral", "plutonowy", "sierżant", "starszy sierżant")# combobox values (level2)
+    level2.current(0)
+    
+    change_label = Label(frameDutyChange, text = "Dane zmiennika")                                                              # label "Dane zmiennika"
+    
+    global name2_entry
+    name2 = StringVar()                                                                                                         # name2 variable
+    name2_label = Label(frameDutyChange, text = "Imię: ", font = (font_name, font_size))                                        # label "Imię: "
+    name2_entry = Entry(frameDutyChange, width = width_size, textvariable = name2, font = (font_name, font_size))               # name entry pole
+    
+    global surname2_entry
+    surname2 = StringVar()                                                                                                      # surname2 variable
+    surname2_label = Label(frameDutyChange, text = "Nazwisko: ", font = (font_name, font_size))                                 # label "Nazwisko: "
+    surname2_entry = Entry(frameDutyChange, width = width_size, textvariable = surname2, font = (font_name, font_size))         # surname2 entry pole
+
+    global rang
+    rang_var = StringVar()                                                                                                      # surname2 variable
+    rang_label = Label(frameDutyChange, text = "Funkcja: ", font = (font_name, font_size))                                      # label "Nazwisko: "
+    rang = Combobox(frameDutyChange, width = width_size + 4, textvariable = rang_var)                                           # cobobox object (level2)
+    rang["value"] = ("Podoficer dyżurny", "I Dyżurny", "II Dyżurny")                                                            # combobox values (level2)
+    rang.current(0)
+    
+    # display
+    default_application(window)                                                                                                 # default application
+    
+    rang_label.grid(column = 0, row = 1, padx = 10, pady = 5)                                                                   # rang label position
+    rang.grid(column = 1, row = 1, padx = 10, pady = 5)                                                                         # rang combobox position
+
+    mot_label.grid(column = 0, row = 2, padx = 10, pady = 5)                                                                    # motivation label position
+    mot_entry.grid(column = 1, row = 2, padx = 10, pady = 5)                                                                    # motivation entry position
+ 
+    destination_application(window)                                                                                             # destination application
+    date_application_single(window, "Data pełnienia służby", 10, font_name, font_size)
+    change_label.grid(column = 1, row = 3, padx = 10, pady = 5)                                                                 # change label position
+    
+    level2_label.grid(column = 0, row = 5, padx = 10, pady = 5)                                                                 # level2 label position
+    level2.grid(column = 1, row = 5, padx = 10, pady = 5)                                                                       # level2 label position
+    name2_label.grid(column = 0, row = 15, padx = 10, pady = 5)                                                                 # name2 label position
+    name2_entry.grid(column = 1, row = 15, padx = 10, pady = 5)                                                                 # name2 entry position
+    
+    surname2_label.grid(column = 0, row = 25, padx = 10, pady = 5)                                                              # surname2 label position
+    surname2_entry.grid(column = 1, row = 25, padx = 10, pady = 5)                                                              # surname2 entry position
+
+    frameDutyChange.pack()                                                                                                      # frame position
+
+   
+    bnt = Button(window, text = "Drukuj!", command = docx_command_dutyChange_kmp)                                               # button "Drukuj!"
+    bnt.pack()                                                                                                                  # button position

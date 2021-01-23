@@ -1,5 +1,5 @@
 #
-#   Module responisible for document managment and printing
+#   Module responsible for document managment and printing
 #
 
 from docx import Document
@@ -7,6 +7,7 @@ from docx.shared import Pt, Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from tkinter import filedialog, simpledialog, messagebox
 from docx.text.tabstops import TabStops, WD_TAB_ALIGNMENT, WD_TAB_LEADER
+from docx.enum.section import WD_ORIENT
 
 # extra functions
 def bossChoose(toWho, doc):
@@ -157,7 +158,7 @@ def bossChoose(toWho, doc):
     if(toWho == "2"):
 
         toWho_para = doc.add_paragraph()
-        toWho_run = toWho_para.add_run("por. mgr inż. Piotr Nawalicki")
+        toWho_run = toWho_para.add_run("por. mgr Piotr Nawalicki")
 
         title_toWho = doc.add_paragraph()
         title_toWho_run = title_toWho.add_run("DOWÓDCA KOMPANII")
@@ -604,6 +605,17 @@ def titlePosition(toWho, generation, font_name = "Times New Roman", font_size_l 
         technical_format3.bold = True                                                                                   # bold font
         technical_text3.paragraph_format.left_indent = Pt(156)
 
+def rangChange(rang):
+    if(rang == "Podoficer dyżurny"):
+        rang = "Podoficera dyżurnego"
+    elif(rang == "I Dyżurny"):
+        rang = "I Dyżurnego"
+    elif(rang == "II Dyżurny"):
+        rang = "II Dyżurnego"
+    else:
+        rang = " "
+    return rang
+
 def infoChange(topic, line, font_name = "Times New Roman", font_size_l = Pt(12)):
 
     if(topic == "okolicznościowy"):
@@ -640,6 +652,14 @@ def infoChange(topic, line, font_name = "Times New Roman", font_size_l = Pt(12))
 
     if(topic == "buty"):
         topic_var = "wymiany uszkodzonego obuwia."
+        technical_run5 = line.add_run(topic_var)                                                                    # input topic
+        technical_format5 = technical_run5.font                                                                     # text format
+        technical_format5.name = font_name                                                                          # font name
+        technical_format5.size = font_size_l                                                                        # font size (12)
+        technical_format5.italic = True                                                                             # italic font
+   
+    if(topic == "zmianę służby na kompanii"):
+        topic_var = "zmiany służby na kompanii."
         technical_run5 = line.add_run(topic_var)                                                                    # input topic
         technical_format5 = technical_run5.font                                                                     # text format
         technical_format5.name = font_name                                                                          # font name
@@ -1077,10 +1097,16 @@ def docx_one(level, name, surname, where, date, group_var, direction_var, kmp_va
     generation.save(file_name + ".docx")														      				# saving a document
 
 def docx_hdk(level, name, surname, where, date, group_var, direction_var, rektor, data1, data2, data3, place_var, add_var, font_name = "Times New Roman", font_size_l = Pt(12), font_size = Pt(10), font_size_s = Pt(8), margin = Inches(0.1969)):
-    file_name = simpledialog.askstring("Zapisz", "nazwa dokumentu")                                                 # window asking for name of a document
-    generation = Document()                                                                                         # creating document(object)
 
-            # filling a document
+    file_name = simpledialog.askstring("Zapisz", "nazwa dokumentu")                                                 # window asking for name of a document
+    generation = Document()
+
+    section = generation.sections                                                                                   # make a section 
+    section.orientation = WD_ORIENT.LANDSCAPE                                                                       # page alignment landscape
+    section.page_with = Inches(11)
+    section.page_heigth = Inches(8.5)
+
+    # filling a document
     level_n_name = generation.add_paragraph()
     level_n_name_run = level_n_name.add_run(str(level + " " + name + " " + surname.upper()))                        # printing in put level and name
     level_n_name_format = level_n_name_run.font                                                                     # format text
@@ -1098,7 +1124,7 @@ def docx_hdk(level, name, surname, where, date, group_var, direction_var, rektor
     place_n_date_format.size = font_size                                                                            # font size
 
     direction = generation.add_paragraph()
-    direction_run = direction.add_run(str(direction_var))                                                           # printing input group and lader
+    direction_run = direction.add_run(str(direction_var))                                                           # printing input group and lead
     direction_format = direction_run.font                                                                           # format text
     direction_format.name = font_name                                                                               # font name
     direction_format.size = font_size                                                                               # font size (10)
@@ -1106,7 +1132,7 @@ def docx_hdk(level, name, surname, where, date, group_var, direction_var, rektor
     direction_margin.left_indent = margin                                                                           # setting left margin
 
     group = generation.add_paragraph()
-    group_run = group.add_run(str(group_var).upper())                                                              # printing input group and lader
+    group_run = group.add_run(str(group_var).upper())                                                               # printing input group and lead
     group_format = group_run.font                                                                                   # format text
     group_format.name = font_name                                                                                   # font name
     group_format.size = font_size                                                                                   # font size (10)
@@ -1195,7 +1221,7 @@ def docx_hdk(level, name, surname, where, date, group_var, direction_var, rektor
     add_format.name = font_name                                                                                     # font name
     add_format.size = font_size_l                                                                                   # font size (12)
     add_margin = add.paragraph_format
-    add_margin.left_indent = margin                                                                     # setting left margin
+    add_margin.left_indent = margin                                                                                 # setting left margin
 
     generation.save(file_name + ".docx")
 
@@ -1287,3 +1313,141 @@ def docx_boots(level, name, surname, where, date, group_var, direction_var, kmp_
     technical_text7.alignment =  WD_ALIGN_PARAGRAPH.RIGHT 												       		# position of text
 
     generation.save(file_name + ".docx")														      				# saving a document
+
+def docx_dutyChange_kmp(level, name, surname, rang, level2, name2, surname2, where, date, date2, group_var, plut, kmp, mot, font_name = "Times New Roman", font_size_l = Pt(12), font_size = Pt(10), font_size_s = Pt(8), margin = Inches(0.1969)):
+
+    file_name = simpledialog.askstring("Zapisz", "nazwa dokumentu")                                                 # window asking for name of a document
+    generation = Document()                                                                                         # creating document(object)
+            # filling a document
+    level_n_name = generation.add_paragraph()
+    level_n_name_run = level_n_name.add_run(str(level + " " + name + " " + surname.upper()))                        # printing in put level and name
+    level_n_name_format = level_n_name_run.font                                                                     # format text
+    level_n_name_format.name = font_name                                                                            # font name
+    level_n_name_format.size = font_size                                                                            # font size (10)
+    level_n_name_margin = level_n_name.paragraph_format
+    level_n_name_margin.left_indent = margin                                                                        # setting left margin
+
+    tab = level_n_name.paragraph_format.tab_stops
+    tabs = tab.add_tab_stop(position = Inches(4.3), alignment = WD_TAB_ALIGNMENT.LEFT, leader = WD_TAB_LEADER.SPACES)
+
+    place_n_date = level_n_name.add_run("\t" + where + ", dn. " + date)
+    place_n_date_format = place_n_date.font                                                                         # format text
+    place_n_date_format.name = font_name                                                                            # font name
+    place_n_date_format.size = font_size                                                                            # font size
+
+    technical_text = generation.add_paragraph()
+    technical_run = technical_text.add_run("(stopień, imię, nazwisko podchorążego)")                                # technical text
+    technical_format = technical_run.font                                                                           # format text
+    technical_format.name = font_name                                                                               # font name
+    technical_format.size = font_size_s                                                                             # font size (8)
+    technical_text_margin = technical_text.paragraph_format
+    technical_text_margin.left_indent = margin                                                                      # setting left margin
+
+    group_n_direction = generation.add_paragraph()
+    group_n_direction_run = group_n_direction.add_run(str(group_var).upper() + str(", " + plut + " pl / " + kmp + " kp"))# printing input group and lader
+    group_n_direction_format = group_n_direction_run.font                                                           # format text
+    group_n_direction_format.name = font_name                                                                       # font name
+    group_n_direction_format.size = font_size                                                                       # font size (10)
+    group_n_direction_margin = group_n_direction.paragraph_format
+    group_n_direction_margin.left_indent = margin                                                                   # setting left margin
+
+    technical_text2 = generation.add_paragraph()
+    technical_run2 = technical_text2.add_run("\t(grupa studencka, pl/kp)")                                          # technical text
+    technical_format2 = technical_run2.font                                                                         # text format
+    technical_format2.name = font_name                                                                              # font name
+    technical_format2.size = font_size_s                                                                            # font size (8)
+    technical_text2_margin = technical_text2.paragraph_format
+    technical_text2_margin.left_indent = margin                                                                     # setting left margin
+
+    null_para = generation.add_paragraph()
+    null_para = generation.add_paragraph()
+
+    bossChoose(kmp, generation)
+
+    null_para = generation.add_paragraph()
+    null_para = generation.add_paragraph()
+
+    titlePosition(kmp, generation)
+
+    technical_text4 = generation.add_paragraph()
+    technical_run4 = technical_text4.add_run("Dotyczy: ")                                                           # technical text
+    technical_format4 = technical_run4.font                                                                         # text format
+    technical_format4.name = font_name                                                                              # font name
+    technical_format4.size = font_size_l                                                                            # font size (12)
+    technical_format4.bold = True                                                                                   # bold font
+    technical_format4.italic = True                                                                                 # italic font
+    technical_text4_margin = technical_text4.paragraph_format
+    technical_text4_margin.left_indent = margin                                                                     # setting left margin
+
+    infoChange("zmianę służby na kompanii", technical_text4)
+
+    levelBoss(kmp, generation)
+
+    content = generation.add_paragraph()
+    text_content = "proszę o zmianę służby {} ".format(rangChange(rang)) + kmp + " Kompanii w dniu {}".format(date2)# content formating
+    content_run = content.add_run(text_content)                                                                     # printing content
+    content_format = content_run.font                                                                               # text format
+    content_format.name = font_name                                                                                 # font name
+    content_format.size = font_size_l                                                                               # font size (12)
+
+    content.alignment =  WD_ALIGN_PARAGRAPH.JUSTIFY                                                                 # position of text
+    content.paragraph_format.line_spacing = 1.5                                                                     # line spacing
+    content_margin = content.paragraph_format
+    content_margin.left_indent = margin                                                                             # setting left margin
+
+    content2 = generation.add_paragraph()
+    text_content2 = " Powodem zmiany jest {}. Na moje miejsce służbę pełnił będzie {}.".format(str(mot), level2 + " " + name2 + " " + surname2.upper())# content formating
+    content_run2 = content.add_run(text_content2)                                                                   # printing content
+    content_format2 = content_run2.font                                                                             # text format
+    content_format2.name = font_name                                                                                # font name
+    content_format2.size = font_size_l                                                                              # font size (12)
+
+    content2.alignment =  WD_ALIGN_PARAGRAPH.JUSTIFY                                                                # position of text
+    content2.paragraph_format.line_spacing = 1.5                                                                    # line spacing
+    content2_margin = content2.paragraph_format
+    content2_margin.left_indent = margin                                                                            # setting left margin
+    
+    please = generation.add_paragraph()
+    please_run = please.add_run("\tProszę o pozytywne rozpatrzenie mojego wniosku.")                                # etiqwe run
+    please_format = please_run.font                                                                                 # text format
+    please_format.name = font_name                                                                                  # font name
+    please_format.size = font_size_l                                                                                # font size (12)
+
+    please_margin = please.paragraph_format
+    please_margin.left_indent = margin                                                                              # setting left margin
+
+    null_para = generation.add_paragraph()
+
+    technical_text7 = generation.add_paragraph()
+    technical_run7 = technical_text7.add_run(level + " " + name + " " + surname.upper())                            # technical text
+    technical_format7 = technical_run7.font                                                                         # text format
+    technical_format7.name = font_name                                                                              # font name
+    technical_format7.size = font_size_l                                                                            # font size (12)
+    technical_text7.alignment =  WD_ALIGN_PARAGRAPH.RIGHT                                                           # position of text
+    
+    technical_text8 = generation.add_paragraph()
+    technical_run8 = technical_text8.add_run("Stopień, imię, nazwisko, podpis - Zamieniający")                      # technical text
+    technical_format8 = technical_run8.font                                                                         # text format
+    technical_format8.name = font_name                                                                              # font name
+    technical_format8.size = font_size_l                                                                            # font size (12)
+    technical_format8.italic = True                                                                                 # font italic
+    technical_text8.alignment =  WD_ALIGN_PARAGRAPH.RIGHT                                                           # position of text
+    
+    null_para = generation.add_paragraph()
+    
+    technical_text9 = generation.add_paragraph()
+    technical_run9 = technical_text9.add_run(level2 + " " + name2 + " " + surname2.upper())                         # technical text
+    technical_format9 = technical_run9.font                                                                         # text format
+    technical_format9.name = font_name                                                                              # font name
+    technical_format7.size = font_size_l                                                                            # font size (12)
+    technical_text9.alignment =  WD_ALIGN_PARAGRAPH.RIGHT                                                           # position of text
+    
+    technical_text10 = generation.add_paragraph()
+    technical_run10 = technical_text10.add_run("Stopień, imię, nazwisko, podpis - Zamiennik")                       # technical text
+    technical_format10 = technical_run10.font                                                                       # text format
+    technical_format10.name = font_name                                                                             # font name
+    technical_format10.size = font_size_l                                                                           # font size (12)
+    technical_format10.italic = True                                                                                # font italic
+    technical_text10.alignment =  WD_ALIGN_PARAGRAPH.RIGHT                                                          # position of text
+
+    generation.save(file_name + ".docx")                                                                              # saving a document

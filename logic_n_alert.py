@@ -5,8 +5,8 @@
 from tkinter import *
 from tkinter import filedialog, simpledialog, messagebox
 from tkinter.ttk import *
-from applications import application_urlop, application_reward, application_one, application_hdk, application_boots
-from docx_lib import docx_urlop, docx_reward, docx_one, docx_hdk, docx_boots
+from applications import application_urlop, application_reward, application_one, application_hdk, application_boots, application_dutyChange_kmp
+from docx_lib import docx_urlop, docx_reward, docx_one, docx_hdk, docx_boots, docx_dutyChange_kmp
 import requests
 import os
 from sys import exit
@@ -24,6 +24,8 @@ def application_choose(choose, window):                                         
         application_hdk(window)
     elif(choose == "buty wojskowe"):
         application_boots(window)
+    elif(choose == "zmianę służby na kompanii"):
+        application_dutyChange_kmp(window)
     else:
         messagebox.showinfo("NoneAppFonund", "Nie wybrano odpowiedniej aplikacji.")
         sys.exit()
@@ -39,6 +41,8 @@ def docx_choose(app):                                                           
         docx_hdk()
     elif(app == application_boots()):
         docx_boots()
+    elif(app == application_dutyChange_kmp()):
+        docx_dutyChange_kmp()
 
 # updater configuration
 def update_me(win, pro, pro_label):                                                                                     # main function that update program(web sync)

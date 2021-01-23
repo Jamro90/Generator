@@ -5,9 +5,9 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import *
-from applications import application_urlop, application_reward, application_one, application_hdk, application_boots
-from applications import docx_command_urlop, docx_command_reward, docx_command_one, docx_command_hdk, docx_command_boots
-from docx_lib import docx_urlop, docx_reward, docx_one, docx_hdk, docx_boots
+from applications import application_urlop, application_reward, application_one, application_hdk, application_boots, application_dutyChange_kmp
+from applications import docx_command_urlop, docx_command_reward, docx_command_one, docx_command_hdk, docx_command_boots, docx_command_dutyChange_kmp
+from docx_lib import docx_urlop, docx_reward, docx_one, docx_hdk, docx_boots, docx_dutyChange_kmp
 from logic_n_alert import application_choose
 
 #
@@ -88,6 +88,20 @@ def toolbar_settings(window, choose):
             scroll.pack(side = "right", fill = Y)
             toolbar_settings(window1, choose)
             application_boots(window1)
+            
+        elif choose == "zmianę służby na kompanii":
+
+            window.destroy()
+            # new window configuration
+            window1 = Tk()
+            window1.geometry("900x1100+800+0")
+            window1.title("Generator")
+
+            application_header = Label(window1, text = "Wniosek o zmianę służby na kompanii", font = (font_name, font_size20)).pack()
+            scroll = Scrollbar(window1)
+            scroll.pack(side = "right", fill = Y)
+            toolbar_settings(window1, choose)
+            application_dutyChange_kmp(window1)
 
     def fileSave(event = ""):                                                                                               # save/print formula
         if choose == "urlop okolicznościowy":
@@ -100,6 +114,8 @@ def toolbar_settings(window, choose):
             docx_command_hdk()
         elif choose == "buty wojskowe":
             docx_command_boots()
+        elif choose == "zmianę służby na kompanii":
+            docx_command_dutyChange_kmp()
         else:
             messagebox.showinfo("NoneAppFonund", "Nie wybrano odpowiedniej aplikacji.")
             sys.exit()

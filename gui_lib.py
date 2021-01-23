@@ -11,11 +11,11 @@ from date_lib import date_read
 from applications import application_urlop, application_reward, application_hdk, application_boots
 
 # font conofigurations
-version = "1.2"                                                                                                             # program version
+version = "1.2.1"                                                                                                             # program version
 font_size20 = 20                                                                                                            # font size config (20)
 font_size10 = 10                                                                                                            # font size config (10)
 
-def window_start(title = "Generator ver " + version, geometry = "400x250", font_name = "arial"):
+def window_start(title = "Generator ver " + version, geometry = "450x250", font_name = "arial"):
     win = Tk()
     win.title(title)                                                                    							        # main window title
     win.geometry(geometry)
@@ -96,7 +96,7 @@ def window_main(title = "Generator ver " + version, geometry = "700x300+50+0", f
     global option_var
     option_var = StringVar()                                                                                                # combobox value storage
     option = Combobox(frameWin, width = 35, textvariable = option_var)                                                      # cobobox object
-    option["value"] = ("urlop okolicznościowy", "urlop nagrodowy", "przepustka jednorazowa", "HDK(nie działa)", "buty wojskowe")        # combobox values
+    option["value"] = ("urlop okolicznościowy", "urlop nagrodowy", "przepustka jednorazowa", "HDK(nie działa)", "buty wojskowe", "zmianę służby na kompanii")        # combobox values
     option.current(0)                                                                                                       # current value
 
     next_button = Button(frameWin, text = "Dalej", command = window_form)                                                   # button that shows main window
